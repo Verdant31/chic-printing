@@ -3,6 +3,7 @@ import { useState } from "react";
 import AddProduct from "../components/content/AddProduct";
 import SideBar from "../components/Sidebar";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Home: NextPage = () => {
   const [content, setContent] = useState(<AddProduct />);

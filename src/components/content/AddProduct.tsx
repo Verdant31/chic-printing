@@ -1,15 +1,46 @@
-import React, { useRef } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { api } from "../../services/api";
+
+interface NewProductFormData {
+  name: string;
+  price: number;
+}
 
 const AddProduct: React.FC = () => {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const priceRef = useRef<HTMLInputElement>(null);
-  const handleAddProdct = () => {
-    if (nameRef.current && priceRef.current) {
-      const name = nameRef.current.value;
-      const price = priceRef.current.value;
-      console.log(name, price);
-    }
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm<NewProductFormData>({
+    defaultValues: {
+      name: "",
+      price: undefined,
+    },
+  });
+  const price = watch("price");
+
+  const handleAddProdct = async (data: NewProductFormData) => {
+    await api
+      .post("/products/addProduct", {
+        name: data.name,
+        price: data.price,
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        clearErrors();
+        reset();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Erro ao adicionar produto!");
+      });
   };
+
   return (
     <main className="mx-auto my-12 flex max-w-7xl flex-col items-center">
       <p
@@ -18,23 +49,46 @@ const AddProduct: React.FC = () => {
       >
         ADICIONAR PRODUTO
       </p>
-      <form className="mt-10 flex min-h-[200px] min-w-[800px] flex-col rounded-md bg-zinc-800 p-12">
+      <form
+        onSubmit={handleSubmit(handleAddProdct)}
+        className="mt-10 flex min-h-[200px] min-w-[800px] flex-col rounded-md bg-zinc-800 p-12"
+      >
         <div className="flex justify-between ">
-          <input
-            ref={nameRef}
-            className="h-9 min-w-[300px] rounded-sm p-4 px-4 focus:outline-none"
-            placeholder="Nome"
-          />
-          <input
-            ref={priceRef}
-            className="h-9 min-w-[300px] rounded-sm p-2 px-4"
-            type="number"
-            placeholder="Preço"
-          />
+          <div className="flex flex-col">
+            <input
+              {...register("name", { required: true })}
+              className="h-9 min-w-[300px] rounded-sm p-4 px-4 focus:outline-none"
+              placeholder="Nome"
+            />
+            {errors.name && (
+              <span className="mt-4 text-[#FF3333]">
+                Entre com o nome do produto
+              </span>
+            )}
+          </div>
+          <div className="flex flex-col">
+            <div className="relative">
+              <input
+                {...register("price", { required: true, min: 1 })}
+                className={`h-9 min-w-[300px] rounded-sm p-2  focus:outline-none ${
+                  price ? "px-[32px]" : "px-4"
+                }`}
+                placeholder="Preço"
+              />
+              {price && (
+                <span className="absolute top-[5.5px] left-[10px]">R$</span>
+              )}
+            </div>
+            {errors.price && (
+              <span className="mt-4 text-[#FF3333]">
+                Entre com o preço do produto
+              </span>
+            )}
+          </div>
         </div>
         <button
-          onClick={handleAddProdct}
-          className="mt-14 h-10 w-[100%] self-center rounded-md bg-white text-center text-zinc-600"
+          type="submit"
+          className="mt-10 h-10 w-[100%] self-center rounded-md bg-white text-center text-zinc-600"
         >
           Confirmar
         </button>
