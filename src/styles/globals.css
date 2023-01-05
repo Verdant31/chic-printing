@@ -7,6 +7,8 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box; 
+      overflow-x: hidden;
+      overflow-y: visible;
     }
     body {
       background: #eff2f5;
@@ -18,6 +20,11 @@
       font-size: 1rem;
     }
   }
+::-webkit-scrollbar {
+    width: 0;  
+    background: transparent; 
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
