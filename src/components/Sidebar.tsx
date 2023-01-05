@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import AddProduct from "./content/AddProduct";
 import ListProducts from "./content/ListProducts/ListProducts";
+import Print from "./content/Print/Print";
 
 interface SideBarProps {
   changeContent: (newContent: ReactNode) => void;
@@ -55,7 +56,7 @@ const SideBar: React.FC<SideBarProps> = ({ changeContent }) => {
             }`}
           >
             <li
-              onClick={() => changeContent(<AddProduct />)}
+              onClick={() => changeContent(<Print />)}
               className="cursor-pointer text-sm font-medium tracking-[2px] text-zinc-300 transition-all duration-150 hover:text-zinc-400"
             >
               Imprimir
