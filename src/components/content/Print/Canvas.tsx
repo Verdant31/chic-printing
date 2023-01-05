@@ -1,9 +1,7 @@
+/* eslint-disable new-cap */
 import { fabric } from "fabric";
 import { useEffect, useState } from "react";
 import jsPDF from "jspdf";
-
-// 94.488188976
-// 56.692913386
 
 export function MyCanvas() {
   const [isOnClient, setIsOnClient] = useState(false);
@@ -45,11 +43,10 @@ export function MyCanvas() {
       initialTopPrice += 56.692913386 + 7.5590551181;
     }
   }
-  const imgData = canvas.toDataURL("image/jpeg");
-  // eslint-disable-next-line new-cap
+  const imgData = canvas.toDataURL({ format: "png", quality: 1 });
   const pdf = new jsPDF("p", "mm");
 
-  pdf.addImage(imgData, "JPEG", 0, 0);
+  pdf.addImage(imgData, "PNG", 0, 0, 0, 0);
   pdf.save("download.pdf");
 
   return <div>{isOnClient && <canvas id="c"></canvas>};</div>;
