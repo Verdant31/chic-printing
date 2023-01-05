@@ -28,3 +28,26 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance:textfield; /* Firefox */
 }
+
+.Toastify__toast-container {
+  cursor: default;
+}
+
+.Toastify__toast-container--top-left {
+  cursor: default;
+}
+
+.Toastify__toast-container--bottom-right {
+  cursor: default;
+}
+
+/** Classes for the displayed toast **/
+.Toastify__toast {
+  cursor: default;
+}
+.Toastify__toast--rtl {
+  cursor: default;
+}
+.Toastify__toast-body {
+  cursor: default;
+}

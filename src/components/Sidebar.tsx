@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
+import AddProduct from "./content/AddProduct";
+import ListProducts from "./content/ListProducts/ListProducts";
 
-const SideBar: React.FC = () => {
+interface SideBarProps {
+  changeContent: (newContent: ReactNode) => void;
+}
+
+const SideBar: React.FC<SideBarProps> = ({ changeContent }) => {
   const [productsIsOpen, setProductsIsOpen] = useState(false);
 
   return (
@@ -21,10 +27,16 @@ const SideBar: React.FC = () => {
               productsIsOpen ? "flex" : "hidden"
             }`}
           >
-            <li className="cursor-pointer text-sm font-medium tracking-[2px] text-zinc-300 transition-all duration-150 hover:text-zinc-400">
+            <li
+              onClick={() => changeContent(<AddProduct />)}
+              className="cursor-pointer text-sm font-medium tracking-[2px] text-zinc-300 transition-all duration-150 hover:text-zinc-400"
+            >
               Adicionar
             </li>
-            <li className="cursor-pointer text-sm font-medium tracking-[2px] text-zinc-300 transition-all duration-150 hover:text-zinc-400">
+            <li
+              onClick={() => changeContent(<ListProducts />)}
+              className="cursor-pointer text-sm font-medium tracking-[2px] text-zinc-300 transition-all duration-150 hover:text-zinc-400"
+            >
               Ver todos
             </li>
           </ul>
