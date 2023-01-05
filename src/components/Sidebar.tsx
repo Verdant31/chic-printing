@@ -8,13 +8,14 @@ interface SideBarProps {
 
 const SideBar: React.FC<SideBarProps> = ({ changeContent }) => {
   const [productsIsOpen, setProductsIsOpen] = useState(false);
+  const [printingIsOpen, setPrintingIsOpen] = useState(false);
 
   return (
     <aside className="h-[100vh] w-64 bg-zinc-900 p-6 py-12">
       <p className="p-0 text-center text-4xl  tracking-[12px] text-white">
         CHIC
       </p>
-      <div className="mt-6">
+      <div className="mt-6 flex flex-col gap-4">
         <div>
           <button
             className="text-xl font-semibold tracking-[2px] text-zinc-500"
@@ -38,6 +39,26 @@ const SideBar: React.FC<SideBarProps> = ({ changeContent }) => {
               className="cursor-pointer text-sm font-medium tracking-[2px] text-zinc-300 transition-all duration-150 hover:text-zinc-400"
             >
               Ver todos
+            </li>
+          </ul>
+        </div>
+        <div>
+          <button
+            className="text-xl font-semibold tracking-[2px] text-zinc-500"
+            onClick={() => setPrintingIsOpen((prev) => !prev)}
+          >
+            Impressão
+          </button>
+          <ul
+            className={`mt-[12px] ml-[12px] flex-col gap-3 ${
+              printingIsOpen ? "flex" : "hidden"
+            }`}
+          >
+            <li
+              onClick={() => changeContent(<AddProduct />)}
+              className="cursor-pointer text-sm font-medium tracking-[2px] text-zinc-300 transition-all duration-150 hover:text-zinc-400"
+            >
+              Imprimir
             </li>
           </ul>
         </div>

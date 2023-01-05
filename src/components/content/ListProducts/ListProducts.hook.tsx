@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { toast } from "react-toastify";
+import { api } from "../../../services/api";
 import { EditProductFormData } from "../../ConfirmDialog";
 
 type Product = {
@@ -8,43 +10,47 @@ type Product = {
   price: number;
 };
 
-const mockData = [
-  {
-    id: 1,
-    name: "Colar branco X",
-    price: 48.6,
-  },
-  {
-    id: 2,
-    name: "Colar branco Y",
-    price: 48.6,
-  },
-];
-
 export const useListProducts = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product>();
-  const [mockProducts, setMockProducts] = useState(mockData);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isEditingProduct, setIsEditingProduct] = useState(false);
   const [filterName, setFilterName] = useState("");
 
-  const handleDeleteProduct = (product: any) => {
-    setMockProducts(mockProducts.filter((p) => p.id !== product.id));
+  const { data } = useQuery("products", () =>
+    api.get("/products/listProducts").then((response) => response.data.products)
+  );
+
+  useEffect(() => {
+    if (data) setProducts(data);
+  }, [data]);
+
+  const handleDeleteProduct = (product: Product) => {
+    let requestUndo = false;
+    setProducts(products.filter((p) => p.id !== product.id));
     toast.info("Produto excluido com sucesso", {
       position: "bottom-right",
       closeButton: () => (
         <button
-          onClick={() => setMockProducts((oldState) => [...oldState, product])}
+          onClick={() => {
+            setProducts((oldState) => [...oldState, product]);
+            requestUndo = true;
+          }}
           className="mr-4  underline"
         >
           Desfazer
         </button>
       ),
     });
+    setTimeout(() => {
+      if (!requestUndo) {
+        api.delete(`/products/deleteProduct/${product.id}`);
+      }
+    }, 5000);
   };
   const handleConfirmEditProduct = (data: EditProductFormData) => {
     if (selectedProduct) {
-      setMockProducts(
-        mockProducts.map((p) =>
+      setProducts(
+        products.map((p) =>
           p.id === selectedProduct.id
             ? { ...p, name: data.newName, price: data.newPrice }
             : p
@@ -68,7 +74,7 @@ export const useListProducts = () => {
   };
 
   return {
-    mockProducts,
+    products,
     handleDeleteProduct,
     handleEditProduct,
     isEditingProduct,

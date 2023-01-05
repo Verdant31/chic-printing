@@ -14,7 +14,11 @@ const Home: NextPage = () => {
 
   return (
     <div className="flex h-[100vh] w-[100vw]">
-      <ToastContainer style={{ width: 450, cursor: "help" }} />
+      <ToastContainer
+        pauseOnHover={false}
+        autoClose={4000}
+        style={{ width: 450, cursor: "help" }}
+      />
       <SideBar changeContent={changeContent} />
       {content}
     </div>

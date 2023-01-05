@@ -5,7 +5,7 @@ import { useListProducts } from "./ListProducts.hook";
 
 const ListProducts: React.FC = () => {
   const {
-    mockProducts,
+    products,
     handleDeleteProduct,
     handleEditProduct,
     isEditingProduct,
@@ -16,7 +16,7 @@ const ListProducts: React.FC = () => {
     filterName,
   } = useListProducts();
 
-  const filteredProducts = mockProducts.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     return product.name.toLowerCase().includes(filterName.toLowerCase());
   });
 
@@ -71,7 +71,7 @@ const ListProducts: React.FC = () => {
                 </div>
               </div>
             ))
-          : mockProducts.map((product) => (
+          : products.map((product) => (
               <div
                 key={product.id}
                 className="flex w-[100%] justify-between gap-12 rounded-md bg-white p-[14px]"
