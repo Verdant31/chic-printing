@@ -1,5 +1,5 @@
 /* eslint-disable new-cap */
-import { fabric } from "fabric";
+import { fabric } from "fabric-pure-browser";
 import jsPDF from "jspdf";
 import { PaperTypes } from "../components/content/Print/Print.enum";
 import { Position } from "../components/content/Print/Print.hook";
