@@ -1,14 +1,26 @@
+/* eslint-disable no-unused-vars */
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../context/AuthContext";
 import { api } from "../services/api";
 
 const Login: NextPage = () => {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [cookies, setCookie] = useCookies(["token"]);
+  const { updateIsAuthenticated, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("home");
+    }
+  }, [isAuthenticated, router]);
+
   const handleSignIn = async (e: FormEvent) => {
     e.preventDefault();
     await api
@@ -18,6 +30,8 @@ const Login: NextPage = () => {
       })
       .then((res) => {
         router.push("home");
+        setCookie("token", res.data.token, { path: "/" });
+        updateIsAuthenticated(true);
         toast.success(res.data.message);
       })
       .catch((err) => {

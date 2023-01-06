@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../server/db";
-
+import jwt from "jsonwebtoken";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -14,7 +14,19 @@ export default async function handler(
       },
     });
     if (rightCredentials) {
-      res.status(200).json({ message: "Autenticação realizada com sucesso." });
+      const token = jwt.sign(
+        {
+          user: rightCredentials,
+          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+        },
+        `${process.env.PRIVATE_KEY}`,
+        {
+          algorithm: "HS256",
+        }
+      );
+      res
+        .status(200)
+        .json({ message: "Autenticação realizada com sucesso.", token });
     } else {
       res.status(401).json({ message: "Credenciais inválidas." });
     }
