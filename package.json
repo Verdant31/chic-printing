@@ -17,6 +17,7 @@
     "axios": "^1.2.2",
     "fabric-pure-browser": "^5.1.0",
     "framer-motion": "^8.1.5",
+    "jsdom": "^20.0.3",
     "jsonwebtoken": "^9.0.0",
     "jspdf": "^2.5.1",
     "next": "13.1.1",
