@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { PrismaClient } from "@prisma/client";
 
 import { env } from "../env/server.mjs";
