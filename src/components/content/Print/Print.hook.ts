@@ -1,51 +1,86 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
+import { generatePdf } from "../../../utils/generatePdf";
 import { PaperTypes } from "./Print.enum";
 
-type Product = {
+export type Product = {
   id: number;
   name: string;
   price: number;
   position: number;
+  isActive: boolean;
+};
+
+export type Position = {
+  id: number;
+  product?: Product;
 };
 
 export const usePrint = () => {
-  const [currentPosition, setCurrentPosition] = useState(0);
-  const [selectedPaper, setSelectedPaper] = useState<PaperTypes>(
-    PaperTypes.one
-  );
-  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [paper, setPaper] = useState<PaperTypes>(PaperTypes.one);
   const [products, setProducts] = useState<Product[]>([]);
+  const [positions, setPositions] = useState<Position[]>([]);
 
   const { data } = useQuery("products", () =>
-    api.get("/products/listProducts").then((response) => response.data.products)
+    api.get("/products/listProducts").then((response) => {
+      return response.data.products.map((product: Product) => {
+        return { ...product, isActive: false };
+      });
+    })
   );
-
-  const handleAddProduct = (product: Product) => {
-    setSelectedProducts([
-      ...selectedProducts,
-      { ...product, position: currentPosition },
-    ]);
-    setCurrentPosition((prev) => prev + 1);
-  };
 
   useEffect(() => {
     if (data) setProducts(data);
-  }, [data]);
+    if (paper === PaperTypes.one) {
+      const initialPositions = [];
+      for (let i = 0; i < 90; i++) {
+        initialPositions.push({ id: i });
+      }
+      setPositions(initialPositions);
+    } else {
+      // TODO Aqui vai ir a contagem de posições para o papel 2
+    }
+  }, [data, paper]);
+
+  const handleAddProduct = (clickedProduct: Product) => {
+    setProducts((prevState) => {
+      return prevState.map((product) => {
+        if (product.isActive) {
+          return { ...product, isActive: false };
+        }
+        if (product.id === clickedProduct.id) {
+          return { ...product, isActive: true };
+        }
+        return product;
+      });
+    });
+  };
+
+  const handleAddProductToPrint = (position: Position) => {
+    setPositions((prevState) => {
+      return prevState.map((pos) => {
+        if (pos.id === position.id) {
+          const product = products.find((product) => product.isActive);
+          return { ...pos, product };
+        }
+        return pos;
+      });
+    });
+  };
 
   const handlePrint = () => {
-    console.log("print");
+    generatePdf({ paper, positions });
   };
-  const handleSelectPaper = (paper: PaperTypes) => {
-    setSelectedPaper(paper);
-  };
+
   return {
     products,
-    selectedProducts,
-    handleSelectPaper,
-    selectedPaper,
+    setPaper,
+    paper,
     handleAddProduct,
+    positions,
+    setPositions,
+    handleAddProductToPrint,
     handlePrint,
   };
 };

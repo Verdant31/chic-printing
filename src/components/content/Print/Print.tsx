@@ -1,73 +1,61 @@
 import React from "react";
 import { usePrint } from "./Print.hook";
 import { PaperTypes } from "./Print.enum";
+import Aside from "./components/Aside";
 export interface PrintProps {}
 
 const Print: React.FC<PrintProps> = () => {
   const {
     products,
     handleAddProduct,
-    selectedProducts,
-    selectedPaper,
-    handleSelectPaper,
+    setPaper,
+    paper,
+    positions,
+    handleAddProductToPrint,
     handlePrint,
   } = usePrint();
   return (
-    <main className="flex px-12 py-12">
-      <div>
-        <div className="flex w-[350px] flex-wrap gap-4">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              onClick={() => handleAddProduct(product)}
-              className="cursor-pointer rounded-md bg-gray-200 p-2 px-4"
-            >
-              <p className="text-sm">{product.name}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+    <main className="flex px-12 py-6">
+      <Aside
+        handleAddProduct={handleAddProduct}
+        handleSelectPaper={setPaper}
+        selectedPaper={paper}
+        products={products}
+        handlePrint={handlePrint}
+      />
       <div className="flex flex-col items-center">
-        <div className="flex items-center gap-4">
-          <p
-            onClick={() => handleSelectPaper(PaperTypes.one)}
-            className="font-regular mb-4 cursor-pointer text-xl"
-            style={{
-              textDecoration:
-                selectedPaper === PaperTypes.one ? "underline" : "none",
-            }}
-          >
-            Folha tipo 1
-          </p>
-          <p
-            onClick={() => handleSelectPaper(PaperTypes.two)}
-            className="font-regular mb-4 cursor-pointer text-xl"
-            style={{
-              textDecoration:
-                selectedPaper === PaperTypes.two ? "underline" : "none",
-            }}
-          >
-            Folha tipo 2
-          </p>
-        </div>
-        <div className="h-[620px] bg-zinc-200">
+        <div className="h-[680px] bg-zinc-200">
           <div>
             <div
-              className={`flex flex-wrap items-center justify-center bg-zinc-200 p-2 ${
-                selectedPaper === PaperTypes.one ? "w-[700px]" : "w-[400px]"
+              className={`grid grid-cols-5 items-center justify-center bg-zinc-200 p-4 ${
+                paper === PaperTypes.one ? "w-[700px]" : "w-[400px]"
               }`}
             >
-              {selectedProducts.map((product) => (
-                <div key={product.id} className="p-2 px-4">
-                  <p className="text-[13px]">{product.name}</p>
-                </div>
-              ))}
+              {positions.map((position) => {
+                if (position.product) {
+                  return (
+                    <div key={position.id} className="p-2 px-4 text-center">
+                      <p className="text-[13px] font-bold">
+                        {position.product.name}
+                      </p>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={position.id} className="p-2 px-4 text-center">
+                      <p
+                        onClick={() => handleAddProductToPrint(position)}
+                        className="cursor-pointer  text-[13px]"
+                      >
+                        Disponível
+                      </p>
+                    </div>
+                  );
+                }
+              })}
             </div>
           </div>
         </div>
-        <button className="mt-6" onClick={handlePrint}>
-          Imprimir
-        </button>
       </div>
     </main>
   );
