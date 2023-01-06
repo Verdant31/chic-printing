@@ -71,6 +71,12 @@ export const usePrint = () => {
 
   const handlePrint = () => {
     generatePdf({ paper, positions });
+    setProducts((prevState) =>
+      prevState.map((product) => ({ ...product, isActive: false }))
+    );
+    setPositions((prevState) =>
+      prevState.map((pos) => ({ ...pos, product: undefined }))
+    );
   };
 
   return {

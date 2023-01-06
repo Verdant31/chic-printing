@@ -13,7 +13,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="flex h-[100vh] w-[100vw]">
+    <div className="relative flex h-[100vh] w-[100vw]">
       <ToastContainer
         pauseOnHover={false}
         autoClose={4000}

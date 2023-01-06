@@ -9,6 +9,19 @@ interface generatePdfProps {
   positions: Position[];
 }
 
+const initialLeft = 55;
+const initialTopName = 34;
+const initialTopPrice = 10;
+
+const getPosition = (index: number) => {
+  const row = Math.floor(index / 5);
+  const column = index % 5;
+  const left = initialLeft + column * (15.118110236 + 97.377952756);
+  const topName = initialTopName + row * (56.692913386 + 7.5590551181);
+  const topPrice = initialTopPrice + row * (56.692913386 + 7.5590551181);
+  return { left, topName, topPrice };
+};
+
 export const generatePdf = ({ paper, positions }: generatePdfProps) => {
   const canvas = new fabric.Canvas("c", {
     fireRightClick: true,
@@ -20,32 +33,26 @@ export const generatePdf = ({ paper, positions }: generatePdfProps) => {
     canvas.backgroundColor = "#fff";
     canvas.setHeight(1133.8582677);
 
-    let initialLeft = 55;
-    let initialTopName = 34;
-    let initialTopPrice = 10;
-
-    for (let i = 1; i <= 85; i++) {
-      canvas.add(
-        new fabric.Text("Colar branco X", {
-          left: initialLeft,
-          top: initialTopName,
-          fontSize: 14,
-        })
-      );
-      canvas.add(
-        new fabric.Text("R$48,90", {
-          left: initialLeft,
-          top: initialTopPrice,
-          fontSize: 14,
-        })
-      );
-      initialLeft += 15.118110236 + 97.377952756;
-      if (i % 5 === 0) {
-        initialLeft = 55;
-        initialTopName += 56.692913386 + 7.5590551181;
-        initialTopPrice += 56.692913386 + 7.5590551181;
+    positions.forEach((position) => {
+      if (position.product) {
+        const { left, topName, topPrice } = getPosition(position.id);
+        canvas.add(
+          new fabric.Text(position.product.name, {
+            left,
+            top: topName,
+            fontSize: 14,
+          })
+        );
+        canvas.add(
+          new fabric.Text(`R$ ${position.product.price}`, {
+            left,
+            top: topPrice,
+            fontSize: 14,
+          })
+        );
       }
-    }
+    });
+
     const imgData = canvas.toDataURL({ format: "png", quality: 1 });
     const pdf = new jsPDF("p", "mm");
 
