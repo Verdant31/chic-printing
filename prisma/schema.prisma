@@ -14,3 +14,11 @@ model product {
     name      String
     price     Float
 }
+
+model user {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    username  String   @unique
+    password  String
+}

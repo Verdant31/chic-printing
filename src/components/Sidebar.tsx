@@ -12,11 +12,14 @@ const SideBar: React.FC<SideBarProps> = ({ changeContent }) => {
   const [printingIsOpen, setPrintingIsOpen] = useState(false);
 
   return (
-    <aside className="h-[100vh] w-64 bg-zinc-900 p-6 py-12">
+    <aside className="h-[100vh] w-64 bg-zinc-900 p-6 py-10">
       <p className="p-0 text-center text-4xl  tracking-[12px] text-white">
         CHIC
       </p>
-      <div className="mt-6 flex flex-col gap-4">
+      <p className="mt-2 p-0 text-center text-xl tracking-[8px] text-zinc-200">
+        Acessórios
+      </p>
+      <div className="mt-8 flex flex-col gap-4">
         <div>
           <button
             className="text-xl font-semibold tracking-[2px] text-zinc-500"
