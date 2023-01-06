@@ -17,7 +17,11 @@ export type Position = {
   product?: Product;
 };
 
-export const usePrint = () => {
+interface usePrintProps {
+  linesMode: boolean;
+}
+
+export const usePrint = ({ linesMode }: usePrintProps) => {
   const [paper, setPaper] = useState<PaperTypes>(PaperTypes.one);
   const [products, setProducts] = useState<Product[]>([]);
   const [positions, setPositions] = useState<Position[]>([]);
@@ -57,16 +61,52 @@ export const usePrint = () => {
     });
   };
 
-  const handleAddProductToPrint = (position: Position) => {
-    setPositions((prevState) => {
-      return prevState.map((pos) => {
-        if (pos.id === position.id) {
-          const product = products.find((product) => product.isActive);
-          return { ...pos, product };
-        }
-        return pos;
+  const handleAddProductToPrint = (position?: Position) => {
+    if (!position) return;
+    if (!linesMode) {
+      setPositions((prevState) => {
+        return prevState.map((pos) => {
+          if (pos.id === position?.id) {
+            const product = products.find((product) => product.isActive);
+            return { ...pos, product };
+          }
+          return pos;
+        });
       });
-    });
+    } else {
+      setPositions((prevState) => {
+        return prevState.map((pos) => {
+          if (pos.id >= position.id && pos.id <= position.id + 4) {
+            const product = products.find((product) => product.isActive);
+            return { ...pos, product };
+          }
+          return pos;
+        });
+      });
+    }
+  };
+
+  const handleRemoveProductFromPrint = (position?: Position) => {
+    if (!position) return;
+    if (!linesMode) {
+      setPositions((prevState) => {
+        return prevState.map((pos) => {
+          if (pos.id === position?.id) {
+            return { ...pos, product: undefined };
+          }
+          return pos;
+        });
+      });
+    } else {
+      setPositions((prevState) => {
+        return prevState.map((pos) => {
+          if (pos.id >= position.id && pos.id <= position.id + 4) {
+            return { ...pos, product: undefined };
+          }
+          return pos;
+        });
+      });
+    }
   };
 
   const handlePrint = () => {
@@ -88,5 +128,6 @@ export const usePrint = () => {
     setPositions,
     handleAddProductToPrint,
     handlePrint,
+    handleRemoveProductFromPrint,
   };
 };

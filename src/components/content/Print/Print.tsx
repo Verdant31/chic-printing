@@ -1,10 +1,13 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { usePrint } from "./Print.hook";
 import { PaperTypes } from "./Print.enum";
 import Aside from "./components/Aside";
-export interface PrintProps {}
+import { Minus, Plus } from "phosphor-react";
+export interface PrintProps {
+  linesMode?: boolean;
+}
 
-const Print: React.FC<PrintProps> = () => {
+const Print: React.FC<PrintProps> = ({ linesMode = false }) => {
   const {
     products,
     handleAddProduct,
@@ -13,7 +16,34 @@ const Print: React.FC<PrintProps> = () => {
     positions,
     handleAddProductToPrint,
     handlePrint,
-  } = usePrint();
+    handleRemoveProductFromPrint,
+  } = usePrint({ linesMode });
+
+  const rows: ReactNode[] = [];
+  for (let i = 0; i < 89; i = i + 5) {
+    if (positions[i]?.product) {
+      rows.push(
+        <Minus
+          key={positions[i]?.id}
+          onClick={() => handleRemoveProductFromPrint(positions[i])}
+          className="cursor-pointer"
+          size={16}
+          weight="bold"
+        />
+      );
+    } else {
+      rows.push(
+        <Plus
+          key={positions[i]?.id}
+          onClick={() => handleAddProductToPrint(positions[i])}
+          className="cursor-pointer"
+          size={16}
+          weight="bold"
+        />
+      );
+    }
+  }
+
   return (
     <main className="flex px-12 py-6">
       <Aside
@@ -23,7 +53,12 @@ const Print: React.FC<PrintProps> = () => {
         products={products}
         handlePrint={handlePrint}
       />
-      <div className="flex flex-col items-center">
+      <div className="flex ">
+        {linesMode && (
+          <div className="mr-8 mt-[24px] flex flex-col gap-[19.7px]">
+            {rows}
+          </div>
+        )}
         <div className="h-[680px] bg-zinc-200">
           <div>
             <div
@@ -35,7 +70,10 @@ const Print: React.FC<PrintProps> = () => {
                 if (position.product) {
                   return (
                     <div key={position.id} className="p-2 px-4 text-center">
-                      <p className="text-[13px] font-bold">
+                      <p
+                        onClick={() => handleRemoveProductFromPrint(position)}
+                        className="cursor-pointer text-[13px] font-bold"
+                      >
                         {position.product.name}
                       </p>
                     </div>
@@ -46,6 +84,9 @@ const Print: React.FC<PrintProps> = () => {
                       <p
                         onClick={() => handleAddProductToPrint(position)}
                         className="cursor-pointer  text-[13px]"
+                        style={{
+                          cursor: linesMode ? "not-allowed" : "pointer",
+                        }}
                       >
                         Disponível
                       </p>

@@ -48,7 +48,7 @@ const SideBar: React.FC<SideBarProps> = ({ changeContent }) => {
             className="text-xl font-semibold tracking-[2px] text-zinc-500"
             onClick={() => setPrintingIsOpen((prev) => !prev)}
           >
-            Impressão
+            Imprimir
           </button>
           <ul
             className={`mt-[12px] ml-[12px] flex-col gap-3 ${
@@ -59,7 +59,13 @@ const SideBar: React.FC<SideBarProps> = ({ changeContent }) => {
               onClick={() => changeContent(<Print />)}
               className="cursor-pointer text-sm font-medium tracking-[2px] text-zinc-300 transition-all duration-150 hover:text-zinc-400"
             >
-              Imprimir
+              Unidades
+            </li>
+            <li
+              onClick={() => changeContent(<Print linesMode={true} />)}
+              className="cursor-pointer text-sm font-medium tracking-[2px] text-zinc-300 transition-all duration-150 hover:text-zinc-400"
+            >
+              Linhas
             </li>
           </ul>
         </div>
