@@ -45,7 +45,7 @@ const Print: React.FC<PrintProps> = ({ linesMode = false }) => {
   }
 
   return (
-    <main className="flex px-12 py-6">
+    <main className="flex gap-4  py-6">
       <Aside
         handleAddProduct={handleAddProduct}
         handleSelectPaper={setPaper}

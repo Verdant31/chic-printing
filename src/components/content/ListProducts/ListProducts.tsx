@@ -16,9 +16,12 @@ const ListProducts: React.FC = () => {
     filterName,
   } = useListProducts();
 
-  const filteredProducts = products.filter((product) => {
-    return product.name.toLowerCase().includes(filterName.toLowerCase());
-  });
+  const filteredProducts =
+    filterName.length > 0
+      ? products.filter((product) => {
+          return product.name.toLowerCase().includes(filterName.toLowerCase());
+        })
+      : [];
 
   return (
     <main className="mx-auto my-12 flex max-w-7xl flex-col items-center">
@@ -41,30 +44,30 @@ const ListProducts: React.FC = () => {
           weight="bold"
         />
       </div>
-      <div className="mt-12 flex w-[800px] flex-col gap-8">
+      <div className="mt-12 flex h-[500px] w-[800px] flex-col gap-8 overflow-y-scroll ">
         {filteredProducts.length > 0
           ? filteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="flex w-[100%] justify-between gap-12 rounded-md bg-zinc-800 p-[14px]"
+                className="flex w-[100%] justify-between gap-12 rounded-md bg-white p-[14px]"
               >
                 <div className="flex  gap-12">
-                  <p className="min-w-36 text-zinc-200">{product.name}</p>
-                  <div className="h-[100%] w-[1px] bg-white text-zinc-200" />
-                  <p className="text-zinc-200">R$ {product.price}</p>
+                  <p className="min-w-36">{product.name}</p>
+                  <div className="h-[100%] w-[1px] bg-zinc-500" />
+                  <p>R$ {product.price}</p>
                 </div>
                 <div className="flex gap-4">
                   <Trash
                     onClick={() => handleDeleteProduct(product)}
                     size={24}
                     weight="regular"
-                    color="#e4e4e7"
+                    color="black"
                     className="cursor-pointer"
                   />
                   <Pencil
                     onClick={() => handleEditProduct(product)}
-                    color="#e4e4e7"
                     size={24}
+                    color="#626262"
                     weight="regular"
                     className="cursor-pointer"
                   />
@@ -86,13 +89,13 @@ const ListProducts: React.FC = () => {
                     onClick={() => handleDeleteProduct(product)}
                     size={24}
                     weight="regular"
-                    color="#ffffff"
+                    color="black"
                     className="cursor-pointer"
                   />
                   <Pencil
                     onClick={() => handleEditProduct(product)}
                     size={24}
-                    color="#e4e4e7"
+                    color="#626262"
                     weight="regular"
                     className="cursor-pointer"
                   />
