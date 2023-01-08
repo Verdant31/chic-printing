@@ -7,7 +7,7 @@ import { PaperTypes } from "./Print.enum";
 export type Product = {
   id: number;
   name: string;
-  price: number;
+  price: string;
   position: number;
   isActive: boolean;
 };
@@ -38,7 +38,7 @@ export const usePrint = ({ linesMode }: usePrintProps) => {
     if (data) setProducts(data);
     if (paper === PaperTypes.one) {
       const initialPositions = [];
-      for (let i = 0; i < 90; i++) {
+      for (let i = 0; i < 126; i++) {
         initialPositions.push({ id: i });
       }
       setPositions(initialPositions);
@@ -76,7 +76,7 @@ export const usePrint = ({ linesMode }: usePrintProps) => {
     } else {
       setPositions((prevState) => {
         return prevState.map((pos) => {
-          if (pos.id >= position.id && pos.id <= position.id + 4) {
+          if (pos.id >= position.id && pos.id <= position.id + 6) {
             const product = products.find((product) => product.isActive);
             return { ...pos, product };
           }
@@ -100,7 +100,7 @@ export const usePrint = ({ linesMode }: usePrintProps) => {
     } else {
       setPositions((prevState) => {
         return prevState.map((pos) => {
-          if (pos.id >= position.id && pos.id <= position.id + 4) {
+          if (pos.id >= position.id && pos.id <= position.id + 6) {
             return { ...pos, product: undefined };
           }
           return pos;

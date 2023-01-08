@@ -47,19 +47,33 @@ export const useListProducts = () => {
       }
     }, 5000);
   };
+
   const handleConfirmEditProduct = (data: EditProductFormData) => {
     if (selectedProduct) {
-      setProducts(
-        products.map((p) =>
-          p.id === selectedProduct.id
-            ? { ...p, name: data.newName, price: data.newPrice }
-            : p
-        )
-      );
-      handleCloseEditProductModal();
-      toast.info("Produto editado com sucesso", {
-        position: "bottom-right",
-      });
+      api
+        .post(`/products/editProduct`, {
+          id: selectedProduct.id,
+          name: data.newName,
+          price: data.newPrice,
+        })
+        .then(() => {
+          setProducts(
+            products.map((p) =>
+              p.id === selectedProduct.id
+                ? { ...p, name: data.newName, price: data.newPrice }
+                : p
+            )
+          );
+          handleCloseEditProductModal();
+          toast.info("Produto editado com sucesso", {
+            position: "bottom-right",
+          });
+        })
+        .catch(() => {
+          toast.error("Erro ao editar produto", {
+            position: "bottom-right",
+          });
+        });
     }
   };
 

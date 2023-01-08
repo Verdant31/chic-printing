@@ -12,7 +12,7 @@ model product {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     name      String
-    price     Float
+    price     String
 }
 
 model user {

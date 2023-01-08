@@ -10,15 +10,28 @@ interface generatePdfProps {
 }
 
 const initialLeft = 38.736220472;
-const initialTopName = 78.913385827;
-const initialTopPrice = 56.913385827;
+const initialTopName = 82.818;
+const initialTopPrice = 66.3;
 
 const getPosition = (index: number) => {
-  const row = Math.floor(index / 5);
-  const column = index % 5;
+  const row = Math.floor(index / 7);
+  const column = index % 7;
   const left = initialLeft + column * (8.9590551181 + 97.377952756);
-  const topName = initialTopName + row * 57.472440945;
-  const topPrice = initialTopPrice + row * 57.472440945;
+  const topName = initialTopName + row * 56.1772440945;
+  const topPrice = initialTopPrice + row * 56.1772440945;
+  console.log(index);
+  console.log(
+    "Linha: " +
+      row +
+      " Coluna: " +
+      column +
+      " Left: " +
+      left +
+      " TopName: " +
+      topName +
+      " TopPrice: " +
+      topPrice
+  );
   return { left, topName, topPrice };
 };
 
@@ -31,8 +44,7 @@ export const generatePdf = ({ paper, positions }: generatePdfProps) => {
   if (paper === PaperTypes.one) {
     canvas.setWidth(793.7007874);
     canvas.backgroundColor = "#fff";
-    canvas.setHeight(1122.519685);
-
+    canvas.setHeight(1125.519685);
     positions.forEach((position) => {
       if (position.product) {
         const words = position.product.name.split(" ");
@@ -60,7 +72,7 @@ export const generatePdf = ({ paper, positions }: generatePdfProps) => {
     });
 
     const imgData = canvas.toDataURL({ format: "png", quality: 1 });
-    const pdf = new jsPDF("p", "mm");
+    const pdf = new jsPDF({ unit: "px", format: "a4" });
 
     pdf.addImage(imgData, "PNG", 0, 0, 0, 0);
     pdf.save("download.pdf");

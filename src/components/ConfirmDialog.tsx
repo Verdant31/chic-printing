@@ -27,13 +27,12 @@ const EditProductDialog: React.FC<EditProductDialogProps> = ({
   product,
   handleEditProduct,
 }) => {
-  const { register, watch, handleSubmit } = useForm<EditProductFormData>({
+  const { register, handleSubmit } = useForm<EditProductFormData>({
     defaultValues: {
       newName: product.name,
       newPrice: product.price,
     },
   });
-  const price = watch("newPrice");
 
   return (
     <Dialog open={isOpen} className="ml-[256px] " onClose={handleClose}>
@@ -55,18 +54,11 @@ const EditProductDialog: React.FC<EditProductDialogProps> = ({
             className="h-9 min-w-[300px] rounded-sm bg-zinc-200 p-4 px-4 focus:outline-none"
             placeholder="Nome"
           />
-          <div className="relative">
-            <input
-              {...register("newPrice", { required: true, min: 1 })}
-              className={`h-9 min-w-[300px] rounded-sm bg-zinc-200 p-2  focus:outline-none ${
-                price ? "px-[40px]" : "px-4"
-              }`}
-              placeholder="Preço"
-            />
-            {price && (
-              <span className="absolute top-[5.5px] left-[18px]">R$</span>
-            )}
-          </div>
+          <input
+            {...register("newPrice", { required: true })}
+            className="h-9 min-w-[300px] rounded-sm bg-zinc-200 p-4 px-4 focus:outline-none"
+            placeholder="Nome"
+          />
           <button className="mt-4 h-10 w-96 bg-zinc-800  text-white">
             Confirmar
           </button>

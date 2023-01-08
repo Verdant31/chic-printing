@@ -20,7 +20,7 @@ const Print: React.FC<PrintProps> = ({ linesMode = false }) => {
   } = usePrint({ linesMode });
 
   const rows: ReactNode[] = [];
-  for (let i = 0; i < 89; i = i + 5) {
+  for (let i = 0; i < 126; i = i + 7) {
     if (positions[i]?.product) {
       rows.push(
         <Minus
@@ -62,17 +62,20 @@ const Print: React.FC<PrintProps> = ({ linesMode = false }) => {
         <div className="h-[680px] bg-zinc-200">
           <div>
             <div
-              className={`grid grid-cols-5 items-center justify-center bg-zinc-200 p-4 ${
-                paper === PaperTypes.one ? "w-[700px]" : "w-[400px]"
+              className={`grid max-h-[650px] grid-cols-7 items-center justify-center bg-zinc-200 p-4 ${
+                paper === PaperTypes.one ? "w-[880px]" : "w-[400px]"
               }`}
             >
               {positions.map((position) => {
                 if (position.product) {
                   return (
-                    <div key={position.id} className="p-2 px-4 text-center">
+                    <div
+                      key={position.id}
+                      className=" p-2 px-[4px] text-center"
+                    >
                       <p
                         onClick={() => handleRemoveProductFromPrint(position)}
-                        className="cursor-pointer text-[13px] font-bold"
+                        className=" cursor-pointer overflow-hidden overflow-ellipsis whitespace-nowrap text-[13px] font-bold"
                       >
                         {position.product.name}
                       </p>
@@ -80,7 +83,7 @@ const Print: React.FC<PrintProps> = ({ linesMode = false }) => {
                   );
                 } else {
                   return (
-                    <div key={position.id} className="p-2 px-4 text-center">
+                    <div key={position.id} className="p-2 px-0 text-center">
                       <p
                         onClick={() => handleAddProductToPrint(position)}
                         className="cursor-pointer  text-[13px]"

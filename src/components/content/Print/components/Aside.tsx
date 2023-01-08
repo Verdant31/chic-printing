@@ -17,10 +17,9 @@ const Aside: React.FC<AsideProps> = ({
   products,
   handlePrint,
 }) => {
-  console.log(products);
   return (
-    <div className="relative ml-4">
-      <div className="ml-14 flex items-center gap-4">
+    <div className="relative ml-4 mr-8">
+      <div className="flex flex-col items-center">
         <p
           onClick={() => handleSelectPaper(PaperTypes.one)}
           className="font-regular mb-4 cursor-pointer text-xl"
@@ -42,7 +41,7 @@ const Aside: React.FC<AsideProps> = ({
           Folha tipo 2
         </p>
       </div>
-      <div className="grid  w-[380px] grid-cols-2 grid-rows-2 gap-4  overflow-y-visible ">
+      <div className="ml-4 grid w-[200px] grid-cols-1 grid-rows-2 gap-4 self-center overflow-y-visible ">
         {products.map((product) => (
           <div
             key={product.id}
@@ -52,7 +51,7 @@ const Aside: React.FC<AsideProps> = ({
                 ? { backgroundColor: "#1A202C", color: "white" }
                 : {}
             }
-            className="flex h-[45px] cursor-pointer items-center rounded-md bg-gray-200 px-4"
+            className="flex h-[50px] cursor-pointer items-center rounded-md bg-gray-200 px-4"
           >
             <p className="text-sm">{product.name}</p>
           </div>
@@ -60,7 +59,7 @@ const Aside: React.FC<AsideProps> = ({
       </div>
       <button
         onClick={handlePrint}
-        className="absolute bottom-10 left-[45%] -translate-x-[50%] text-2xl underline"
+        className="absolute bottom-10 left-[50%] -translate-x-[50%] text-2xl underline"
       >
         Imprimir
       </button>
