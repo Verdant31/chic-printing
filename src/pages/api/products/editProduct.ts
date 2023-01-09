@@ -10,7 +10,7 @@ export default async function handler(
     const updatedProduct = await prisma.product.update({
       data: {
         name,
-        price: parseFloat(price.replace(",", ".")),
+        price: price.replace(",", "."),
       },
       where: {
         id,
