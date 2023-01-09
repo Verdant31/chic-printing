@@ -50,11 +50,13 @@ const EditProductDialog: React.FC<EditProductDialogProps> = ({
       >
         <div className="mt-4 flex flex-col items-center gap-4">
           <input
-            {...register("newName", { required: true })}
+            maxLength={15}
+            {...register("newName", { required: true, maxLength: 15 })}
             className="h-9 min-w-[300px] rounded-sm bg-zinc-200 p-4 px-4 focus:outline-none"
             placeholder="Nome"
           />
           <input
+            maxLength={14}
             {...register("newPrice", { required: true })}
             className="h-9 min-w-[300px] rounded-sm bg-zinc-200 p-4 px-4 focus:outline-none"
             placeholder="Nome"

@@ -5,24 +5,22 @@ import { api } from "../../services/api";
 
 interface NewProductFormData {
   name: string;
-  price: number;
+  price: string;
 }
 
 const AddProduct: React.FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     clearErrors,
     formState: { errors },
   } = useForm<NewProductFormData>({
     defaultValues: {
       name: "",
-      price: undefined,
+      price: "",
     },
   });
-  const price = watch("price");
 
   const handleAddProdct = async (data: NewProductFormData) => {
     await api
@@ -56,7 +54,8 @@ const AddProduct: React.FC = () => {
         <div className="flex justify-between ">
           <div className="flex flex-col">
             <input
-              {...register("name", { required: true })}
+              {...register("name", { required: true, maxLength: 15 })}
+              maxLength={15}
               className="h-9 min-w-[300px] rounded-sm p-4 px-4 focus:outline-none"
               placeholder="Nome"
             />
@@ -67,18 +66,12 @@ const AddProduct: React.FC = () => {
             )}
           </div>
           <div className="flex flex-col">
-            <div className="relative">
-              <input
-                {...register("price", { required: true, min: 1 })}
-                className={`h-9 min-w-[300px] rounded-sm p-2  focus:outline-none ${
-                  price ? "px-[32px]" : "px-4"
-                }`}
-                placeholder="Preço"
-              />
-              {price && (
-                <span className="absolute top-[5.5px] left-[10px]">R$</span>
-              )}
-            </div>
+            <input
+              {...register("price", { required: true, min: 1 })}
+              className="h-9 min-w-[300px] rounded-sm p-2  px-4 focus:outline-none"
+              maxLength={14}
+              placeholder="Preço"
+            />
             {errors.price && (
               <span className="mt-4 text-[#FF3333]">
                 Entre com o preço do produto

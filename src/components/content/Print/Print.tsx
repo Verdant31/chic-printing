@@ -20,7 +20,11 @@ const Print: React.FC<PrintProps> = ({ linesMode = false }) => {
   } = usePrint({ linesMode });
 
   const rows: ReactNode[] = [];
-  for (let i = 0; i < 126; i = i + 7) {
+  for (
+    let i = 0;
+    i < (paper === PaperTypes.one ? 126 : 40);
+    i = i + (paper === PaperTypes.one ? 7 : 2)
+  ) {
     if (positions[i]?.product) {
       rows.push(
         <Minus
@@ -45,7 +49,7 @@ const Print: React.FC<PrintProps> = ({ linesMode = false }) => {
   }
 
   return (
-    <main className="flex gap-4  py-6">
+    <main className="flex w-[calc(100vw-228px)]  justify-between gap-4 py-6">
       <Aside
         handleAddProduct={handleAddProduct}
         handleSelectPaper={setPaper}
@@ -53,7 +57,11 @@ const Print: React.FC<PrintProps> = ({ linesMode = false }) => {
         products={products}
         handlePrint={handlePrint}
       />
-      <div className="flex ">
+      <div
+        className={`flex ${
+          linesMode && paper === PaperTypes.one ? "" : "mr-8"
+        }`}
+      >
         {linesMode && (
           <div className="mr-8 mt-[24px] flex flex-col gap-[19.7px]">
             {rows}
@@ -62,8 +70,10 @@ const Print: React.FC<PrintProps> = ({ linesMode = false }) => {
         <div className="h-[680px] bg-zinc-200">
           <div>
             <div
-              className={`grid max-h-[650px] grid-cols-7 items-center justify-center bg-zinc-200 p-4 ${
-                paper === PaperTypes.one ? "w-[880px]" : "w-[400px]"
+              className={`grid items-center justify-center bg-zinc-200 p-4 ${
+                paper === PaperTypes.one
+                  ? "h-[650px] w-[880px] grid-cols-7"
+                  : "h-[730px] w-[400px] grid-cols-2"
               }`}
             >
               {positions.map((position) => {

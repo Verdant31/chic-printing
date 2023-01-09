@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
-import { generatePdf } from "../../../utils/generatePdf";
+import { generatePdf } from "../../../utils/PDF/generatePdf";
 import { PaperTypes } from "./Print.enum";
 
 export type Product = {
@@ -25,6 +25,7 @@ export const usePrint = ({ linesMode }: usePrintProps) => {
   const [paper, setPaper] = useState<PaperTypes>(PaperTypes.one);
   const [products, setProducts] = useState<Product[]>([]);
   const [positions, setPositions] = useState<Position[]>([]);
+  const howManyProducts = paper === PaperTypes.one ? 6 : 1;
 
   const { data } = useQuery("products", () =>
     api.get("/products/listProducts").then((response) => {
@@ -43,7 +44,11 @@ export const usePrint = ({ linesMode }: usePrintProps) => {
       }
       setPositions(initialPositions);
     } else {
-      // TODO Aqui vai ir a contagem de posições para o papel 2
+      const initialPositions = [];
+      for (let i = 0; i < 40; i++) {
+        initialPositions.push({ id: i });
+      }
+      setPositions(initialPositions);
     }
   }, [data, paper]);
 
@@ -76,7 +81,10 @@ export const usePrint = ({ linesMode }: usePrintProps) => {
     } else {
       setPositions((prevState) => {
         return prevState.map((pos) => {
-          if (pos.id >= position.id && pos.id <= position.id + 6) {
+          if (
+            pos.id >= position.id &&
+            pos.id <= position.id + howManyProducts
+          ) {
             const product = products.find((product) => product.isActive);
             return { ...pos, product };
           }
@@ -100,7 +108,10 @@ export const usePrint = ({ linesMode }: usePrintProps) => {
     } else {
       setPositions((prevState) => {
         return prevState.map((pos) => {
-          if (pos.id >= position.id && pos.id <= position.id + 6) {
+          if (
+            pos.id >= position.id &&
+            pos.id <= position.id + howManyProducts
+          ) {
             return { ...pos, product: undefined };
           }
           return pos;
