@@ -10,7 +10,7 @@ export default async function handler(
     const newProduct = await prisma.product.create({
       data: {
         name,
-        price: parseFloat(price.replace(",", ".")),
+        price: price.replace(",", "."),
       },
     });
     if (newProduct) {
