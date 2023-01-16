@@ -37,7 +37,7 @@ export const generatePdf = ({ paper, positions }: generatePdfProps) => {
           })
         );
         canvas.add(
-          new fabric.Text(`3x de R$${position.product.price}0,00`, {
+          new fabric.Text(`3x de R$${position.product.price}`, {
             left,
             top: topPrice,
             fontSize: 14.5,
@@ -64,7 +64,7 @@ export const generatePdf = ({ paper, positions }: generatePdfProps) => {
           })
         );
         canvas.add(
-          new fabric.Text(`3x de R$${position.product.price}0,00`, {
+          new fabric.Text(`3x de R$${position.product.price}`, {
             left: priceLeft,
             top,
             fontSize: 14.5,
