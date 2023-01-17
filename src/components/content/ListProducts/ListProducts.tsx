@@ -22,7 +22,7 @@ const ListProducts: React.FC = () => {
           return product.name.toLowerCase().includes(filterName.toLowerCase());
         })
       : [];
-
+  console.log(null);
   return (
     <main className="mx-auto my-12 flex max-w-7xl flex-col items-center">
       <p
@@ -54,7 +54,7 @@ const ListProducts: React.FC = () => {
                 <div className="flex  gap-12">
                   <p className="min-w-36">{product.name}</p>
                   <div className="h-[100%] w-[1px] bg-zinc-500" />
-                  <p>R$ {product.price}</p>
+                  <p>{product.price}</p>
                 </div>
                 <div className="flex gap-4">
                   <Trash
@@ -82,7 +82,7 @@ const ListProducts: React.FC = () => {
                 <div className="flex  gap-12">
                   <p className="min-w-36">{product.name}</p>
                   <div className="h-[100%] w-[1px] bg-zinc-500" />
-                  <p>R$ {product.price}</p>
+                  <p>{product.price}</p>
                 </div>
                 <div className="flex gap-4">
                   <Trash
