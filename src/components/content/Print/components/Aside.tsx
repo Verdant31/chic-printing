@@ -61,7 +61,7 @@ const Aside: React.FC<AsideProps> = ({
         placeholder="Pesquise por um produto..."
       />
       <div
-        className="ml-4 grid max-h-[500px] w-[200px] grid-cols-1 self-center overflow-y-scroll"
+        className="ml-4 grid max-h-[400px] w-[200px] grid-cols-1 self-center overflow-y-scroll"
         style={{
           width: selectedPaper === PaperTypes.one ? "200px" : "650px",
           gridTemplateColumns:
