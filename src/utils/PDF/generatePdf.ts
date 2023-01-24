@@ -22,14 +22,9 @@ export const generatePdf = ({ paper, positions }: generatePdfProps) => {
     canvas.setHeight(1125.519685);
     positions.forEach((position) => {
       if (position.product) {
-        const words = position.product.name.split(" ");
-        const formatedName =
-          position.product.name.length > 10
-            ? `${words[0]} ${words[1]} \n${words[2]}`
-            : position.product.name;
         const { left, topName, topPrice } = getPosition(position.id, paper);
         canvas.add(
-          new fabric.Text(formatedName.toUpperCase(), {
+          new fabric.Text(position.product.name.toUpperCase(), {
             left,
             top: topName,
             fontWeight: "600",

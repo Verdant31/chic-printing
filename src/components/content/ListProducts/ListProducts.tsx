@@ -22,7 +22,6 @@ const ListProducts: React.FC = () => {
           return product.name.toLowerCase().includes(filterName.toLowerCase());
         })
       : [];
-  console.log(null);
   return (
     <main className="mx-auto my-12 flex max-w-7xl flex-col items-center">
       <p
